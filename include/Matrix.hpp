@@ -43,6 +43,8 @@ class Matrix
 	T **e;
 	void fill(T **e);
 public:
+	friend std::ostream & operator<< <>(std::ostream & output, const Matrix<T> &);
+	friend std::istream & operator>> <>(std::istream & input, Matrix<T> &);
 	Matrix() : stroki(0), stolbs(0), e(nullptr) {};
 	Matrix(int n, int m) : stroki(n), stolbs(m)
 	{
@@ -181,8 +183,6 @@ public:
 	return true;
 	}
     }
-    friend std::ostream & operator<< <>(std::ostream & output, const Matrix<T> &);
-    friend std::istream & operator>> <>(std::istream & input, Matrix<T> &);
 };
 
 template <typename T>
