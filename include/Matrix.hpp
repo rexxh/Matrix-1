@@ -136,7 +136,8 @@ public:
           return *this;
           //M2 уничтожается, освобождая память
 	}
-
+friend std::ostream & operator<< <>(std::ostream & output, const Matrix<T> & matrix);
+    friend std::istream & operator>> <>(std::istream & input, Matrix<T> & matrix);
 };
 
 template <typename T>
@@ -149,5 +150,32 @@ void Matrix<T>::fill(T **e)
             e[i][j] = e ? e[i][j] : 0;
         }
     }
+}
+
+template <typename T>
+std::ostream & operator<<(std::ostream & output, const Matrix<T> & matrix)
+{
+    for (unsigned int i = 0; i < matrix.stroki; ++i) {
+        output << std::endl;
+        for (unsigned int j = 0; j < matrix.stolbs; ++j) {
+            output << matrix.e[i][j] << "\t";
+        }
+    }
+    
+    return output;
+}
+
+template <typename T>
+std::istream & operator>>(std::istream & input, Matrix<T> & matrix)
+{
+    for (unsigned int i = 0; i < matrix.stroki; ++i) {
+        for (unsigned int j = 0; j < matrix.stolbs; ++j) {
+            if ( !(input >> matrix.e[i][j]) ) {
+                throw "exception in fill matrix";
+            }
+        }
+    }
+    
+    return input;
 }
 #endif
