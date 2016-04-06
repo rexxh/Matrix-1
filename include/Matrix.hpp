@@ -161,6 +161,26 @@ public:
           return *this;
           //M2 уничтожается, освобождая память
 	}
+    bool operator == (const Matrix& matr)
+    {
+	if (stroki!=matr.stroki || stolbs!=matr.stolbs) 
+	{
+		return false;
+	}
+
+	for (int i = 0; i < stroki; i++) 
+	{
+		for (int j = 0; j < stolbs; j++) 
+		{
+			if (e[i][j] != matr.e[i][j]) 
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+	}
+    }
     friend std::ostream & operator<< <>(std::ostream & output, const Matrix<T> &);
     friend std::istream & operator>> <>(std::istream & input, Matrix<T> &);
 };
