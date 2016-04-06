@@ -150,3 +150,4 @@ void Matrix<T>::fill(T **e)
         }
     }
 }
+#endif
