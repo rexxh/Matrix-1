@@ -4,7 +4,8 @@
 #pragma once
 #include <fstream>
 #include <iostream>
-
+template <typename T>
+class Matrix;
 using namespace std;
 ofstream fout;
 ifstream fin;
@@ -160,8 +161,8 @@ public:
           return *this;
           //M2 уничтожается, освобождая память
 	}
-friend std::ostream & operator<< <>(std::ostream & output, const Matrix<T> & matrix);
-    friend std::istream & operator>> <>(std::istream & input, Matrix<T> & matrix);
+    friend std::ostream & operator<< <>(std::ostream & output, const Matrix<T> &);
+    friend std::istream & operator>> <>(std::istream & input, Matrix<T> &);
 };
 
 template <typename T>
