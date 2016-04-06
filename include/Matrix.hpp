@@ -16,6 +16,7 @@ class Matrix
 	int stroki;
 	int stolbs;
 	T **e;
+	void fill(T **e);
 public:
 	Matrix() : stroki(0), stolbs(0), e(nullptr) {};
 	Matrix(int n, int m) : stroki(n), stolbs(m)
@@ -135,4 +136,17 @@ public:
           return *this;
           //M2 уничтожается, освобождая память
 	}
+
 };
+
+template <typename T>
+void Matrix<T>::fill(T **e)
+{
+    e = new T *[stroki];
+    for (unsigned int i = 0; i < stroki; ++i) {
+        e[i] = new T[stolbs];
+        for (unsigned int j = 0; j < stolbs; ++j) {
+            e[i][j] = e ? e[i][j] : 0;
+        }
+    }
+}
