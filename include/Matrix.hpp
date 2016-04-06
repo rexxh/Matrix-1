@@ -9,12 +9,12 @@ using namespace std;
 ofstream fout;
 ifstream fin;
 template <typename T>
-std::ostream & operator<<(std::ostream & output, const Matrix<T> & matrix)
+std::ostream & operator<<(std::ostream & output, const Matrix<T> & matr)
 {
-    for (unsigned int i = 0; i < matrix.stroki; ++i) {
+    for (unsigned int i = 0; i < matr.stroki; ++i) {
         output << std::endl;
-        for (unsigned int j = 0; j < matrix.stolbs; ++j) {
-            output << matrix.e[i][j] << "\t";
+        for (unsigned int j = 0; j < matr.stolbs; ++j) {
+            output << matr.e[i][j] << "\t";
         }
     }
     
@@ -22,11 +22,11 @@ std::ostream & operator<<(std::ostream & output, const Matrix<T> & matrix)
 }
 
 template <typename T>
-std::istream & operator>>(std::istream & input, Matrix<T> & matrix)
+std::istream & operator>>(std::istream & input, Matrix<T> & matr)
 {
-    for (unsigned int i = 0; i < matrix.stroki; ++i) {
-        for (unsigned int j = 0; j < matrix.stolbs; ++j) {
-            if ( !(input >> matrix.e[i][j]) ) {
+    for (unsigned int i = 0; i < matr.stroki; ++i) {
+        for (unsigned int j = 0; j < matr.stolbs; ++j) {
+            if ( !(input >> matr.e[i][j]) ) {
                 throw "exception in fill matrix";
             }
         }
