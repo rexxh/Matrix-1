@@ -15,8 +15,8 @@ SCENARIO("Matrix init", "[init]") {
 
 			THEN("The number of rows and columns must be preserved") {
 
-				REQUIRE(matrix.rows() == rows);
-				REQUIRE(matrix.columns() == columns);
+				REQUIRE(matrix.STR() == rows);
+				REQUIRE(matrix.STOLB() == columns);
 			}
 		}
 	}
