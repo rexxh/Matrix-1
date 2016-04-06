@@ -1,219 +1,137 @@
 #ifndef Matrix_hpp
 #define Matrix_hpp
 
+#pragma once
+#include <fstream>
 #include <iostream>
 
-template <typename T>
-class Matrix;
+using namespace std;
 
-template <class T>
-std::ostream & operator<<(std::ostream & output, const Matrix<T> &);
+ofstream fout;
+ifstream fin;
 
-template <class T>
-std::istream & operator>>(std::istream & input, Matrix<T> &);
-
-template <typename T>
 class Matrix
 {
+	int stroki;
+	int stolbs;
+	double **e;
 public:
-    Matrix(const Matrix & matrix);
-    Matrix(unsigned int rows, unsigned int columns);
-    virtual ~Matrix();
-    auto rows() const -> unsigned int ;
-    auto columns() const -> unsigned int;
-    auto operator[](unsigned int index) const -> const int *;
-    auto operator*(const Matrix &matrix) const -> Matrix;
-    auto operator+(const Matrix &matrix) const -> Matrix;
-    auto operator==(const Matrix &matrix) const -> bool;
-    auto operator=(const Matrix &matrix) -> Matrix &;
-    
-    friend std::ostream & operator<< <>(std::ostream & output, const Matrix<T> & matrix);
-    friend std::istream & operator>> <>(std::istream & input, Matrix<T> & matrix);
-private:
-    unsigned int m_rows, m_columns;
-    T **m_elements;
-    
-    Matrix(unsigned int rows, unsigned int columns, T **elements);
-    void swap(Matrix & matrix);
-    void fill(T **elements);
+	Matrix() : stroki(0), stolbs(0), e(nullptr) {};
+	Matrix(int n, int m) : stroki(n), stolbs(m)
+	{
+		e = new double*[n];
+		for (int i = 0; i < n; i++)
+			e[i] = new double[m];
+	};
+	Matrix(const Matrix &M) : stroki(M.stroki), stolbs(M.stolbs)
+	{ //Êîíñòðóêòîð êîïèðîâàíèÿ
+		e = new double*[stroki];
+		for (int i = 0; i < stroki; i++)
+		{
+			e[i] = new double[stolbs];
+		}
+		for (int i = 0; i < stroki; i++)
+		{
+			for (int j = 0; j < stolbs; j++)
+			{
+				e[i][j] = M.e[i][j];
+			}
+		}
+
+	};
+	~Matrix(){
+		{
+			if (e != nullptr)
+			{
+				for (int i = 0; i < stroki; i++)
+				{
+					delete[] e[i];
+				}
+				delete[] e;
+			}
+		}
+	};
+	void Set(char *path)
+	{ //Çàïèñü â ôàéë
+		fout.open(path);
+		for (int i = 0; i < stroki; i++)
+		{
+			for (int j = 0; j < stolbs; j++)
+			{
+				cin >> e[i][j];
+				fout << " " << e[i][j];
+			}
+			fout << "\n";
+		}
+		fout.close();
+	};
+	int STR() {  return stroki; };
+	int STOLB(){ return stolbs; };
+	int print()
+	{ //Âûâîä íà ýêðàí
+		for (int i = 0; i < stroki; i++)
+		{
+			for (int j = 0; j < stolbs; j++)
+			{
+				cout << e[i][j] << " ";
+			}
+			cout << "\n";
+		}
+		return 0;
+	};
+
+	Matrix operator + ( const Matrix &M2)
+	{ //Îïåðàòîð ñëîæåíèÿ 2óõ ìàòðèö
+		Matrix M3(M2.stroki, M2.stolbs);
+		for (int i = 0; i < M2.stroki; i++)
+		for (int j = 0; j < M2.stolbs; j++)
+			M3.e[i][j] = e[i][j] + M2.e[i][j];
+		cout << "Ìàòðèöà 1 + Ìàòðèöà 2=\n"; M3.print();
+		return M3;
+	};
+
+	Matrix operator * ( const Matrix &M2)
+	{ //Îïåðàòîð óìíîæåíèÿ 2óõ ìàòðèö
+		Matrix M3(stroki, M2.stolbs);
+		int k = 0;
+		for (int i = 0; i < stroki; i++)
+		{
+			for (int j = 0; j < M2.stolbs; j++)
+			{
+				M3.e[i][j] = 0;
+				for (int k = 0; k <= M2.stolbs; k++)
+				{
+					M3.e[i][j] += (e[i][k] * M2.e[k][j]);
+				}
+			}
+		}
+		cout << "Ìàòðèöà 1 * Ìàòðèöà 2  =\n"; M3.print();
+		return M3;
+	}
+
+	double * operator [] (int k)
+	{
+		double* stroka = new double[stolbs];
+		for (int j = 0; j < stolbs; j++)
+		{
+			stroka[j] = e[k - 1][j];
+		}
+		return stroka;
+	};
+	
+	void swap(Matrix & M2) 
+    {
+        // обмен всех членов с M2
+        std::swap(stroki, M2.stroki);
+        std::swap(stolbs, M2.stolbs);
+        std::swap(e, M2.e);
+    };
+
+	Matrix & operator = (Matrix M2);
+	{
+        // обмен this с M2
+	  swap(M2);
+          return *this;
+          //M2 уничтожается, освобождая память
+	}
 };
-
-template <typename T>
-Matrix<T>::Matrix(const Matrix<T> &matrix) : m_rows(matrix.m_rows), m_columns(matrix.m_columns)
-{
-    fill(matrix.m_elements);
-}
-
-template <typename T>
-Matrix<T>::Matrix(unsigned int rows, unsigned int columns) : m_rows(rows), m_columns(columns)
-{
-    fill(nullptr);
-}
-
-template <typename T>
-Matrix<T>::Matrix(unsigned int rows, unsigned int columns, T **elements) : m_rows(rows), m_columns(columns)
-{
-    fill(elements);
-}
-
-template <typename T>
-void Matrix<T>::fill(T **elements)
-{
-    m_elements = new T *[m_rows];
-    for (unsigned int i = 0; i < m_rows; ++i) {
-        m_elements[i] = new T[m_columns];
-        for (unsigned int j = 0; j < m_columns; ++j) {
-            m_elements[i][j] = elements ? elements[i][j] : 0;
-        }
-    }
-}
-
-template <typename T>
-auto Matrix<T>::operator=(const Matrix & matrix) -> Matrix &
-{
-    if ( this != &matrix ) {
-        Matrix(matrix).swap(*this);
-    }
-    
-    return *this;
-}
-
-template <typename T>
-void Matrix<T>::swap(Matrix & matrix)
-{
-    std::swap(m_rows, matrix.m_rows);
-    std::swap(m_columns, matrix.m_columns);
-    std::swap(m_elements, matrix.m_elements);
-}
-
-template <typename T>
-Matrix<T>::~Matrix()
-{
-    for (unsigned int i = 0; i < m_rows; ++i) {
-        delete [] m_elements[i];
-    }
-    
-    delete [] m_elements;
-}
-
-template <typename T>
-auto Matrix<T>::rows() const -> unsigned int
-{
-    return m_rows;
-}
-
-template <typename T>
-auto Matrix<T>::columns() const -> unsigned int
-{
-    return m_columns;
-}
-
-template <typename T>
-auto Matrix<T>::operator[](unsigned int index) const -> const int *
-{
-    if ( index >= m_rows ) {
-        throw std::invalid_argument("index goes abroad");
-    }
-    
-    return m_elements[index];
-}
-
-template <typename T>
-auto Matrix<T>::operator*(const Matrix & matrix) const -> Matrix
-{
-    std::cout << __PRETTY_FUNCTION__ << std::endl;
-    
-    if ( m_columns != matrix.m_rows ) {
-        throw std::invalid_argument("matrix sizes do not match");
-    }
-    
-    unsigned int n = m_rows;
-    unsigned int m = matrix.m_columns;
-    unsigned int s = m_columns;
-    
-    T **elements = new T *[n];
-    for (unsigned int i = 0; i < n; ++i) {
-        elements[i] = new T[m];
-        for (unsigned int j = 0; j < m; ++j) {
-            T value = 0;
-            for (unsigned int k = 0; k < s; ++k) {
-                value += m_elements[i][k] * matrix.m_elements[k][j];
-            }
-            elements[i][j] = value;
-        }
-    }
-    
-    return Matrix(n, m, elements);
-}
-
-template <typename T>
-auto Matrix<T>::operator+(const Matrix & matrix) const -> Matrix
-{
-    std::cout << __PRETTY_FUNCTION__ << std::endl;
-    
-    if ( m_rows != matrix.m_rows || m_columns != matrix.m_columns ) {
-        throw std::invalid_argument("matrix sizes do not match");
-    }
-    
-    unsigned int n = m_rows;
-    unsigned int m = m_columns;
-    
-    T **data = new T *[n];
-    for (unsigned int i = 0; i < n; ++i) {
-        data[i] = new T[m];
-        for (unsigned int j = 0; j < m; ++j) {
-            data[i][j] = m_elements[i][j] + matrix.m_elements[i][j];
-        }
-    }
-    
-    return Matrix(n, m, data);
-}
-
-template <typename T>
-auto Matrix<T>::operator==(const Matrix & matrix) const -> bool
-{
-    std::cout << __PRETTY_FUNCTION__ << std::endl;
-    
-    if ( m_rows != matrix.m_rows || m_columns != matrix.m_columns ) {
-        return false;
-    }
-    
-    for (unsigned int i = 0; i < m_rows; ++i) {
-        for (unsigned int j = 0; j < m_columns; ++j) {
-            if ( m_elements[i][j] != matrix.m_elements[i][j] ) {
-                return false;
-            }
-        }
-    }
-    
-    return true;
-}
-
-template <typename T>
-std::ostream & operator<<(std::ostream & output, const Matrix<T> & matrix)
-{
-    for (unsigned int i = 0; i < matrix.m_rows; ++i) {
-        output << std::endl;
-        for (unsigned int j = 0; j < matrix.m_columns; ++j) {
-            output << matrix.m_elements[i][j] << "\t";
-        }
-    }
-    
-    return output;
-}
-
-template <typename T>
-std::istream & operator>>(std::istream & input, Matrix<T> & matrix)
-{
-    for (unsigned int i = 0; i < matrix.m_rows; ++i) {
-        for (unsigned int j = 0; j < matrix.m_columns; ++j) {
-            if ( !(input >> matrix.m_elements[i][j]) ) {
-                throw "exception in fill matrix";
-            }
-        }
-    }
-    
-    return input;
-}
-
-#endif
