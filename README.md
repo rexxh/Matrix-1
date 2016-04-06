@@ -1,1 +1,1 @@
-[![Build Status](https://travis-ci.org/simplydesigner/Matrix.svg?branch=master)](https://travis-ci.org/simplydesigner/Matrix)
+[![Build Status](https://travis-ci.org/rexxh/Matrix-1.svg?branch=master)](https://travis-ci.org/rexxh/Matrix-1)
