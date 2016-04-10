@@ -42,7 +42,7 @@ SCENARIO("Matrix *", "[multiplication]") {
 	std::ifstream("B2x2.txt") >> B;
 	Matrix<int> expected = Matrix<int>(2, 2);
 	std::ifstream("A*B2x2.txt") >> expected;
-
-	Matrix<int> result = A * B;
+        Matrix<int> result= Matrix<int>(2, 2);
+	result = A * B;
 	REQUIRE(result == expected);
 }
