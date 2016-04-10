@@ -220,7 +220,7 @@ auto Matrix<T>::operator*(const Matrix & matrix) const -> Matrix
         }
     }
     
-    return Matrix(n, m, elements);
+    return Matrix(n, m, e);
 }
 
 #endif;
