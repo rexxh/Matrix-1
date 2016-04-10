@@ -203,24 +203,21 @@ auto Matrix<T>::operator*(const Matrix & matrix) const -> Matrix
     if ( stolbs != matrix.stroki ) {
         throw std::invalid_argument("matrix sizes do not match");
     }
-    
-    unsigned int n = stroki;
-    unsigned int m = matrix.stolbs;
-    unsigned int s = stolbs;
-    
-    T **e = new T *[n];
-    for (unsigned int i = 0; i < n; ++i) {
-        e[i] = new T[m];
-        for (unsigned int j = 0; j < m; ++j) {
-            T value = 0;
-            for (unsigned int k = 0; k < s; ++k) {
-                value += e[i][k] * matrix.e[k][j];
-            }
-            e[i][j] = value;
-        }
-    }
-    
-    return Matrix(n, m, e);
+   Matrix M3(stroki, matrix.stolbs);
+		int k = 0;
+		for (int i = 0; i < stroki; i++)
+		{
+			for (int j = 0; j < matrix.stolbs; j++)
+			{
+				M3.e[i][j] = 0;
+				for (int k = 0; k <= matrix.stolbs; k++)
+				{
+					M3.e[i][j] += (e[i][k] * matrix.e[k][j]);
+				}
+			}
+		}
+		cout << "Матрица 1 * Матрица 2  =\n"; M3.print();
+		return M3;
 }
 
 #endif;
