@@ -52,7 +52,7 @@ class Matrix
 public:
 
 	auto operator==(const Matrix &matrix) const -> bool;
-
+        auto operator*(const Matrix &matrix) const -> Matrix;
 	friend std::ostream & operator<< <>(std::ostream & output, const Matrix &);
 	friend std::istream & operator>> <>(std::istream & input, Matrix &);
 
@@ -130,25 +130,6 @@ public:
 		return M3;
 	};
 
-	Matrix operator * ( const Matrix &M2)
-	{ //Оператор умножения 2ух матриц
-		Matrix M3(stroki, M2.stolbs);
-		int k = 0;
-		for (int i = 0; i < stroki; i++)
-		{
-			for (int j = 0; j < M2.stolbs; j++)
-			{
-				M3.e[i][j] = 0;
-				for (int k = 0; k <= M2.stolbs; k++)
-				{
-					M3.e[i][j] += (e[i][k] * M2.e[k][j]);
-				}
-			}
-		}
-		cout << "Матрица 1 * Матрица 2  =\n"; M3.print();
-		return M3;
-	}
-
 	T * operator [] (int k)
 	{
 		T* stroka = new T[stolbs];
@@ -212,6 +193,34 @@ auto Matrix<T>::operator==(const Matrix & matrix) const -> bool
 	}
 
 	return true;
+}
+
+template <typename T>
+auto Matrix<T>::operator*(const Matrix & matrix) const -> Matrix
+{
+    std::cout << __PRETTY_FUNCTION__ << std::endl;
+    
+    if ( stolbs != matrix.stroki ) {
+        throw std::invalid_argument("matrix sizes do not match");
+    }
+    
+    unsigned int n = stroki;
+    unsigned int m = matrix.stolbs;
+    unsigned int s = stolbs;
+    
+    T **e = new T *[n];
+    for (unsigned int i = 0; i < n; ++i) {
+        e[i] = new T[m];
+        for (unsigned int j = 0; j < m; ++j) {
+            T value = 0;
+            for (unsigned int k = 0; k < s; ++k) {
+                value += e[i][k] * matrix.e[k][j];
+            }
+            e[i][j] = value;
+        }
+    }
+    
+    return Matrix(n, m, elements);
 }
 
 #endif;
