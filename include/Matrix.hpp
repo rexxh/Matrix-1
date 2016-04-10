@@ -40,6 +40,8 @@ std::istream & operator>>(std::istream & input, Matrix <T> & matrix)
 	return input;
 }
 
+
+
 template <typename T>
 class Matrix
 {
@@ -48,6 +50,26 @@ class Matrix
 	T **e;
 	
 public:
+
+	auto Matrix<T>::operator==(const Matrix & matrix) const -> bool
+	{
+		std::cout << __PRETTY_FUNCTION__ << std::endl;
+
+		if (stroki != matrix.stroki || stolbs != matrix.stolbs) {
+			return false;
+		}
+
+		for (unsigned int i = 0; i < stroki; ++i) {
+			for (unsigned int j = 0; j < stolbs; ++j) {
+				if (e[i][j] != matrix.e[i][j]) {
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
 	friend std::ostream & operator<< <>(std::ostream & output, const Matrix &);
 	friend std::istream & operator>> <>(std::istream & input, Matrix &);
 
