@@ -151,7 +151,7 @@ public:
 
 	T * operator [] (int k)
 	{
-		double* stroka = new double[stolbs];
+		T* stroka = new T[stolbs];
 		for (int j = 0; j < stolbs; j++)
 		{
 			stroka[j] = e[k - 1][j];
