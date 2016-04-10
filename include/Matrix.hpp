@@ -132,11 +132,11 @@ public:
 	Matrix operator *(const Matrix &M2) const{
 		if (stroki != M2.stolbs){ throw "razmery matric..."; }
 		Matrix M_res(stroki, M2.stroki);
-		for (int i = 0; i < stolbs; i++)
-		for (int j = 0; j < M2.stroki; j++)
+		for (int i = 0; i < stroki; i++)
+		for (int j = 0; j < M2.stolbs; j++)
 		{
 			M_res.e[i][j] = 0;
-			for (int k = 0; k < M2.stroki; k++)
+			for (int k = 0; k < M2.stolbs; k++)
 				M_res.e[i][j] += (e[i][k] * M2.e[k][j]);
 		}
 		cout << "M1*M2:\n";  M_res.print();
