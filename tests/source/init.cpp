@@ -22,15 +22,6 @@ SCENARIO("Matrix init", "[init]") {
 	}
 }
 
-SCENARIO("Matrix >>", "[fill]") {
-	std::ifstream input("A2x2.txt");
-	Matrix<int> A = Matrix<int>(2, 2);
-	REQUIRE( input >> A );
-	REQUIRE( A[0][0] == 1 );
-	REQUIRE( A[0][1] == 1 );
-	REQUIRE( A[1][0] == 2 );
-	REQUIRE( A[1][1] == 2 );
-}
 
 SCENARIO("Matrix +", "[addition]") {
 	Matrix<int> A = Matrix<int>(2, 2);
