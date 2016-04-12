@@ -168,35 +168,14 @@ public:
 		return *this;
 		//M2 уничтожается, освобождая память
 	}
-
-	void filltest(char *path)
-	{
-		char* number;
-		fin.open(path);
-		for (int i = 0; i < 2; i++)
-		{
-			for (int j = 0; j < 2; j++)
-			{
-				fin >> e[i][j];
-				cout << e[i][j] << " ";
-			}
-			cout << endl;
-		}
-	}
-
-	
 };
-
 
 template <typename T>
 auto Matrix<T>::operator==(const Matrix & matrix) const -> bool
 {
-	std::cout << __PRETTY_FUNCTION__ << std::endl;
-
 	if (stroki != matrix.stroki || stolbs != matrix.stolbs) {
 		return false;
 	}
-
 	for (unsigned int i = 0; i < stroki; ++i) {
 		for (unsigned int j = 0; j < stolbs; ++j) {
 			if (e[i][j] != matrix.e[i][j]) {
@@ -204,7 +183,6 @@ auto Matrix<T>::operator==(const Matrix & matrix) const -> bool
 			}
 		}
 	}
-
 	return true;
 }
 
