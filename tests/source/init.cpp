@@ -46,13 +46,20 @@ SCENARIO("Matrix *", "[multiplication]") {
 	REQUIRE(result == expected);
 }
 
-SCENARIO("Matrix print", "[print]") {
+/*SCENARIO("Matrix print", "[print]") {
 	Matrix<int> A = Matrix<int>(2,2);
 	std::ifstream("A2x2.txt") >> A;
 	int A2 = A.print;
 	REQUIRE(A2 == 0);
-}
+}*/
 
-//SCENARIO ("Matrix []", "[getrow]") {
+SCENARIO ("Matrix []", "[getrow]") {
+	Matrix<int> A (2,2);
+	std::ifstream("A2x2.txt") >> A;
+	int stroka2[2];
+	stroka2[0]=1;
+	stroka2[1]=1;
+	REQUIRE(stroka2==A[1]);
+}
 	
 
