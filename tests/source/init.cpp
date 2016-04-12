@@ -57,7 +57,7 @@ SCENARIO ("Matrix []", "[getrow]") {
 	Matrix<int> A (2,2);
 	std::ifstream("A2x2.txt") >> A;
 	int *stroka2;
-	stroka2=A[2];
+	stroka2=A[1];
 	for(int i=0; i<2; i++){
 	REQUIRE(stroka2[i]==1);
 	}
