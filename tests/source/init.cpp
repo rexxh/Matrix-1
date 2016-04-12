@@ -49,5 +49,11 @@ SCENARIO("Matrix *", "[multiplication]") {
 SCENARIO("Matrix print", "[print]") {
 	Matrix<int> A = Matrix<int>(2,2);
 	std::ifstream("A2x2.txt") >> A;
-	REQUIRE(A.getE == A.print);
+	int **A1 = A.getE;
+	int **A2 = A.print;
+	REQUIRE(A1 == A2);
 }
+
+//SCENARIO ("Matrix []", "[getrow]") {
+	
+
