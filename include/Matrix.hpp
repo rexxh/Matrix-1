@@ -106,7 +106,7 @@ public:
 	};
 	int STR() {  return stroki; };
 	int STOLB(){ return stolbs; };
-	T**  print()
+	int  print()
 	{ //Вывод на экран
        
 		for (int i = 0; i < stroki; i++)
@@ -117,7 +117,7 @@ public:
 			}
 			cout << "\n";
 		}
-		return e;
+		return 0;
 	};
 
 	Matrix operator + ( const Matrix &M2)
