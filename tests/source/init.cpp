@@ -59,7 +59,9 @@ SCENARIO ("Matrix []", "[getrow]") {
 	int stroka2[2];
 	stroka2[0]=1;
 	stroka2[1]=1;
-	REQUIRE(stroka2==A[1]);
+	for(int i=0; i<2; i++){
+	REQUIRE(stroka2[i]==A[i]);
+	}
 }
 	
 
