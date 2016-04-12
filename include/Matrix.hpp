@@ -169,6 +169,10 @@ public:
 		return *this;
 		//M2 уничтожается, освобождая память
 	}
+	
+	T** getE() {
+		return e;
+	}
 };
 
 template <typename T>
