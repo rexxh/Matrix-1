@@ -14,13 +14,13 @@ class Exceptions {
 	char*err;
 	public:
 	Exceptions(char*_err) : err(_err){};
-	char* msg() {return err};
-}
+	char* msg() {return err;};
+};
 
 class Dimension : public Exceptions {
 	public:
 	Dimension(): Exceptions("Wrong dimension!") {};
-}
+};
 
 class WrongIndex : public Exceptions{
         public:
@@ -148,7 +148,7 @@ public:
 
 	Matrix operator + ( const Matrix &M2)
 	{ //Оператор сложения 2ух матриц
-		if (stroki != matrix.stroki || stolbs != matrix.stolbs) 
+		if (stroki != M2.stroki || stolbs != M2.stolbs) 
 		{
 		throw Dimension();
 		}
@@ -179,7 +179,7 @@ public:
 	
 	T * operator [] (int k)
 	{
-		if (k<=0 || k>n)
+		if (k<=0 || k>stroki)
 		{
 			throw WrongIndex();
 		}
