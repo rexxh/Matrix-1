@@ -10,6 +10,29 @@ using namespace std;
 ofstream fout;
 ifstream fin;
 
+class Exceptions {
+	char*err;
+	public:
+	Exceptions(char*_err) : err(_err){};
+	char* msg() {return err};
+}
+
+class Dimension : public Exceptions {
+	public:
+	Dimension(): Exceptions("Wrong dimension!") {};
+}
+
+class WrongIndex : public Exceptions{
+        public:
+	WrongIndex(): Exceptions("Wrong index!") {};
+};
+
+class FileNotOpen : public Exceptions{
+        public:
+	FileNotOpen() : Exceptions("File isn't opened!") {};
+};
+
+
 template <typename T>
 class Matrix;
 
@@ -32,7 +55,7 @@ std::istream & operator>>(std::istream & input, Matrix <T> & matrix)
 	for (unsigned int i = 0; i < matrix.stroki; ++i) {
 		for (unsigned int j = 0; j < matrix.stolbs; ++j) {
 			if (!(input >> matrix.e[i][j])) {
-				throw "exception in fill matrix";
+				throw FileNotOpen();
 			}
 		}
 	}
@@ -93,6 +116,9 @@ public:
 	void Set(char *path)
 	{ //Запись в файл
 		fout.open(path);
+		if (!fout.is_open()) {
+			throw FileNotOpen();
+		}
 		for (int i = 0; i < stroki; i++)
 		{
 			for (int j = 0; j < stolbs; j++)
@@ -122,6 +148,10 @@ public:
 
 	Matrix operator + ( const Matrix &M2)
 	{ //Оператор сложения 2ух матриц
+		if (stroki != matrix.stroki || stolbs != matrix.stolbs) 
+		{
+		throw Dimension();
+		}
 		Matrix M3(M2.stroki, M2.stolbs);
 		for (int i = 0; i < M2.stroki; i++)
 		for (int j = 0; j < M2.stolbs; j++)
@@ -131,7 +161,10 @@ public:
 	};
 	
 	Matrix operator *(const Matrix &M2) const{
-		if (stroki != M2.stolbs){ throw "razmery matric..."; }
+		if (stroki != M2.stolbs)
+		{
+			throw Dimension(); 
+		}
 		Matrix M_res(stroki, M2.stroki);
 		for (int i = 0; i < stroki; i++)
 		for (int j = 0; j < M2.stolbs; j++)
@@ -146,6 +179,10 @@ public:
 	
 	T * operator [] (int k)
 	{
+		if (k<=0 || k>n)
+		{
+			throw WrongIndex();
+		}
 		T* stroka = new T[stolbs];
 		for (int j = 0; j < stolbs; j++)
 		{
@@ -169,17 +206,13 @@ public:
 		return *this;
 		//M2 уничтожается, освобождая память
 	}
-	
-	T** getE() {
-		return e;
-	}
 };
 
 template <typename T>
 auto Matrix<T>::operator==(const Matrix & matrix) const -> bool
 {
 	if (stroki != matrix.stroki || stolbs != matrix.stolbs) {
-		return false;
+		throw Dimension();
 	}
 	for (unsigned int i = 0; i < stroki; ++i) {
 		for (unsigned int j = 0; j < stolbs; ++j) {
