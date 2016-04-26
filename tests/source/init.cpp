@@ -57,14 +57,15 @@ SCENARIO ("Matrix []", "[getrow]") {
 }
 
 SCENARIO ("Dimension error", "[d-error]") {
+	int x=0;
 	Matrix<int> A (2,2);
 	Matrix<int> B(2,3);
 	try {
 		A + B;
 	}
 	catch(Dimension &err){
-		cout << err.msg;
+	x=1;
 	}
-REQUIRE(!err);
+REQUIRE(x==1);
 }	
 
