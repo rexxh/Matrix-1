@@ -46,13 +46,6 @@ SCENARIO("Matrix *", "[multiplication]") {
 	REQUIRE(result == expected);
 }
 
-/*SCENARIO("Matrix print", "[print]") {
-	Matrix<int> A = Matrix<int>(2,2);
-	std::ifstream("A2x2.txt") >> A;
-	int A2 = A.print;
-	REQUIRE(A2 == 0);
-}*/
-
 SCENARIO ("Matrix []", "[getrow]") {
 	Matrix<int> A (2,2);
 	std::ifstream("A2x2.txt") >> A;
@@ -62,5 +55,16 @@ SCENARIO ("Matrix []", "[getrow]") {
 	REQUIRE(stroka2[i]==1);
 	}
 }
-	
+
+SCENARIO ("Dimension error", "[d-error]") {
+	Matrix<int> A (2,2);
+	Matrix<int> B(2,3);
+	try {
+		A + B;
+	}
+	catch(Dimension &err){
+		cout << err.msg;
+	}
+REQUIRE(!err);
+}	
 
