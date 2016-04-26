@@ -56,16 +56,56 @@ SCENARIO ("Matrix []", "[getrow]") {
 	}
 }
 
-SCENARIO ("Dimension error", "[d-error]") {
+SCENARIO ("Dimension sum", "[d-error]") {
 	int x=0;
 	Matrix<int> A (2,2);
 	Matrix<int> B(2,3);
 	try {
 		A + B;
 	}
-	catch(Dimension &err){
+	catch(Dimension &err)
+	{
 	x=1;
 	}
 REQUIRE(x==1);
-}	
+}
+
+SCENARIO ("Dimension MULT", "[d-error]") {
+	int x=0;
+	Matrix<int> A (2,2);
+	Matrix<int> B(2,3);
+	try {
+		A * B;
+	}
+	catch(Dimension &err)
+	{
+	x=1;
+	}
+REQUIRE(x==1);
+}
+
+SCENARIO("File isn't opened", "[f-error]") {
+	int x=0;
+	Matrix<int> A (2,2);
+	try {
+	std::ifstream("A2x3.txt") >> A;
+	}
+	catch(FileNotOpen &err)
+	{
+		x=1;
+	}
+	REQUIRE(x==1);
+}
+
+SCENARIO("Wrong Index", "[i-error]"){
+	int x=0;
+	Matrix<int> A(2,2);
+	try {
+		A[-1];
+	}
+	catch(WrongIndex &err){
+		x=1;
+	}
+	REQUIRE(x==1);
+}
 
