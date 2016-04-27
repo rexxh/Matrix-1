@@ -367,20 +367,5 @@ public:
 	}
 };
 
-template <typename T>
-auto Matrix<T>::operator==(const Matrix & matrix) const -> bool
-{
-	if (stroki != matrix.stroki || stolbs != matrix.stolbs) {
-		throw Dimension();
-	}
-	for (unsigned int i = 0; i < stroki; ++i) {
-		for (unsigned int j = 0; j < stolbs; ++j) {
-			if (e[i][j] != matrix.e[i][j]) {
-				return false;
-			}
-		}
-	}
-	return true;
-}
 
 #endif;
