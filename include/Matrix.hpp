@@ -336,13 +336,13 @@ public:
 		return M_res;
 	}
 	
-	T * operator [] (int k)
+	char * operator [] (int k)
 	{
 		if (k<=0 || k>stroki)
 		{
 			throw WrongIndex();
 		}
-		T* stroka = new T[stolbs];
+		char* stroka = new char[stolbs];
 		for (int j = 0; j < stolbs; j++)
 		{
 			stroka[j] = e[k - 1][j];
